@@ -1,4 +1,4 @@
-repo_organization := "ublue-os"
+repo_organization := "mdiin"
 rechunker_image := "ghcr.io/hhd-dev/rechunk:v1.2.3@sha256:51ffc4c31ac050c02ae35d8ba9e5f5e518b76cfc9b37372df4b881974978443c"
 iso_builder_image := "ghcr.io/jasonn3/build-container-installer:v1.3.0@sha256:c5a44ee1b752fd07309341843f8d9f669d0604492ce11b28b966e36d8297ad29"
 images := '(
@@ -39,8 +39,8 @@ default:
 check:
     #!/usr/bin/bash
     find . -type f -name "*.just" | while read -r file; do
-    	echo "Checking syntax: $file"
-    	{{ just }} --unstable --fmt --check -f $file
+        echo "Checking syntax: $file"
+        {{ just }} --unstable --fmt --check -f $file
     done
     echo "Checking syntax: Justfile"
     {{ just }} --unstable --fmt --check -f Justfile
@@ -50,8 +50,8 @@ check:
 fix:
     #!/usr/bin/bash
     find . -type f -name "*.just" | while read -r file; do
-    	echo "Checking syntax: $file"
-    	{{ just }} --unstable --fmt -f $file
+        echo "Checking syntax: $file"
+        {{ just }} --unstable --fmt -f $file
     done
     echo "Checking syntax: Justfile"
     {{ just }} --unstable --fmt -f Justfile || { exit 1; }
@@ -565,7 +565,7 @@ build-iso $image="aurora" $tag="latest" $flavor="main" ghcr="0" pipeline="0":
     fi
 
     if [[ "{{ pipeline }}" == "1" ]]; then
-    	${PODMAN} rmi ${IMAGE_FULL}
+        ${PODMAN} rmi ${IMAGE_FULL}
     fi
 
     # List Flatpaks with Dependencies
@@ -575,7 +575,7 @@ build-iso $image="aurora" $tag="latest" $flavor="main" ghcr="0" pipeline="0":
     iso_build_args=()
     iso_build_args+=("--rm" "--privileged" "--pull=${PULL_POLICY}")
     if [[ "{{ ghcr }}" == "0" ]]; then
-    	iso_build_args+=(
+        iso_build_args+=(
             "--security-opt=label=disable"
             "--volume=/var/lib/containers/storage:/var/lib/containers/storage"
         )
@@ -592,7 +592,7 @@ build-iso $image="aurora" $tag="latest" $flavor="main" ghcr="0" pipeline="0":
     iso_build_args+=(IMAGE_REPO="${IMAGE_REPO}")
     iso_build_args+=(IMAGE_SIGNED="true")
     if [[ "{{ ghcr }}" == "0" ]]; then
-    	iso_build_args+=(IMAGE_SRC="containers-storage:${IMAGE_FULL}")
+        iso_build_args+=(IMAGE_SRC="containers-storage:${IMAGE_FULL}")
     fi
     iso_build_args+=(IMAGE_TAG="${tag}")
     iso_build_args+=(ISO_NAME="/github/workspace/${build_dir}/${image_name}-${tag}.iso")
